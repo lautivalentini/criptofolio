@@ -1,38 +1,41 @@
+import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-import { getCriptoPrices } from "../api/getCriptoPrices";
+import Skeleton from "../components/Skeleton";
+import { getCriptoPricesByExchange } from "../api/criptoApi";
 import { formatPrice } from "../utils";
-import { OPTIONS_EXCHANGES, FIATS, CRIPTOS } from "../utils/data";
-import { ICriptos } from "../utils/interfaces";
+import { OPTIONS_EXCHANGES, FIATS, COINGECKO_API } from "../utils/data";
+import { ICriptosPrices, ICriptos, IFiats } from "../utils/interfaces";
 
 import styles from "./style.module.scss";
 interface Props {
-    criptos: ICriptos;
+    criptos: ICriptos[];
+    result: ICriptosPrices;
 }
 
 const default_exchange = "buenbit";
 
-const default_criptos = {
-    ADA: { ARS: 0, USD: 0 },
-    BNB: { ARS: 0, USD: 0 },
-    BTC: { ARS: 0, USD: 0 },
-    DAI: { ARS: 0, USD: 0 },
-    ETH: { ARS: 0, USD: 0 },
-};
-
-const Home: React.FC<Props> = ({ criptos }) => {
+const Home: React.FC<Props> = ({ result, criptos }) => {
     const [exchange, setExchange] = useState<string>(default_exchange);
-    const [updatedCriptos, setUpdatedCriptos] = useState<ICriptos>(default_criptos);
+    const [updatedCriptos, setUpdatedCriptos] = useState<ICriptosPrices>({});
     const [update, setUpdate] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (update) {
-            getCriptoPrices(exchange)
-                .then((res) => setUpdatedCriptos(res))
-                .catch(() => setUpdatedCriptos(default_criptos));
+            setLoading(true);
+            getCriptoPricesByExchange(exchange, criptos)
+                .then((res) => {
+                    setUpdatedCriptos(res);
+                    setLoading(false);
+                })
+                .catch(() => {
+                    setUpdatedCriptos({});
+                    setLoading(false);
+                });
         }
-    }, [exchange, update]);
+    }, [exchange, update, criptos]);
 
     function handleChangeExchange(e: React.ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
@@ -67,30 +70,42 @@ const Home: React.FC<Props> = ({ criptos }) => {
                 </div>
                 <div className={styles.tableLine} />
                 <div className={styles.coinsPricing}>
-                    {CRIPTOS.map((cripto) => {
-                        const coin = update ? updatedCriptos[cripto.alias] : criptos[cripto.alias];
+                    {criptos.map((cripto) => {
+                        const coin: IFiats = update
+                            ? updatedCriptos[cripto.symbol]
+                            : result[cripto.symbol];
 
                         return (
                             <div key={cripto.name} className={styles.coinContainer}>
                                 <div className={styles.coinInformation}>
-                                    <span className={styles.coinIndex}>{cripto.id}</span>
+                                    <span className={styles.coinIndex}>
+                                        {cripto.market_cap_rank}
+                                    </span>
                                     <Image
                                         alt={cripto.name}
                                         height={30}
                                         layout="fixed"
-                                        src={cripto.icon}
+                                        src={cripto.image}
                                         width={30}
                                     />
                                     <div className={styles.coinMetadata}>
-                                        <h3>{cripto.alias}</h3>
+                                        <h3>{cripto.symbol}</h3>
                                         <span>{cripto.name}</span>
                                     </div>
                                 </div>
                                 <div className={styles.coinPrices}>
                                     {FIATS.map((fiat) => (
-                                        <div key={fiat} className={styles.coinArs}>
+                                        <div key={fiat} className={styles.coinsFiatPrice}>
                                             <span>{fiat}</span>
-                                            <h4>{formatPrice(coin[fiat])}</h4>
+                                            {loading ? (
+                                                <Skeleton />
+                                            ) : (
+                                                <h4>
+                                                    {fiat == "USD"
+                                                        ? formatPrice(cripto.current_price)
+                                                        : formatPrice(coin ? coin[fiat] : 0)}
+                                                </h4>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -104,10 +119,14 @@ const Home: React.FC<Props> = ({ criptos }) => {
 };
 
 export const getServerSideProps = async () => {
-    const criptos = await getCriptoPrices(default_exchange);
+    const response = await axios.get(COINGECKO_API);
+    const criptos = (response.data || []).slice(0, 10);
+
+    const result = await getCriptoPricesByExchange(default_exchange, criptos);
 
     return {
         props: {
+            result,
             criptos,
         },
     };

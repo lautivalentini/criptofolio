@@ -61,9 +61,13 @@
             width: 60%;
             .coinIndex {
                 margin-right: 25px;
+                width: 5%;
             }
             .coinMetadata {
                 margin-left: 15px;
+                h3 {
+                    text-transform: uppercase;
+                }
                 h3, span {
                     font-size: 16px;
                 }
@@ -76,9 +80,10 @@
             span {
                 font-size: 12px;
             }
-            .coinArs, .coinUsd {
+            .coinsFiatPrice {
                 width: 100%;
                 text-align: end;
+                margin: 0 5px;
             }
         }
         }
