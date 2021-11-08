@@ -1,0 +1,87 @@
+.exchangeContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 20px 0;
+    label {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: grey;
+    }
+    .selectExchange {
+        width: 200px;
+        padding: 10px;
+        background-color: transparent;
+        color: white;
+        border-radius: 5px;
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+.tableContainer {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    .tableTitle {
+        width: 60%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0 10px 0;
+        span {
+            font-size: 12px;
+        }
+    }
+    .tableLine {
+        width: 90%;
+        margin: auto;
+        height: 1px;
+        background-color: #333333;
+    }
+    .coinsPricing {
+        width: 80%;
+        margin: auto;
+        padding: 10px 0;
+        .coinContainer {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        .coinInformation {
+            display: flex;
+            align-items: center;
+            width: 60%;
+            .coinIndex {
+                margin-right: 25px;
+            }
+            .coinMetadata {
+                margin-left: 15px;
+                h3, span {
+                    font-size: 16px;
+                }
+            }
+        }
+        .coinPrices {
+            width: 40%;
+            display: flex;
+            justify-content: space-between;
+            span {
+                font-size: 12px;
+            }
+            .coinArs, .coinUsd {
+                width: 100%;
+                text-align: end;
+            }
+        }
+        }
+    }
+
+}
