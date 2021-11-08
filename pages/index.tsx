@@ -1,14 +1,11 @@
-import axios from "axios";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-import Skeleton from "../components/Skeleton";
+import ExchangeSelector from "../components/ExchangeSelector";
+import CriptoTable from "../components/CriptoTable/CriptoTable";
 import { getCriptoPricesByExchange } from "../api/criptoApi";
-import { formatPrice } from "../utils";
-import { OPTIONS_EXCHANGES, FIATS, COINGECKO_API } from "../utils/data";
-import { ICriptosPrices, ICriptos, IFiats } from "../utils/interfaces";
-
-import styles from "./style.module.scss";
+import { COINGECKO_API } from "../utils/data";
+import { ICriptosPrices, ICriptos } from "../utils/interfaces";
 interface Props {
     criptos: ICriptos[];
     result: ICriptosPrices;
@@ -46,74 +43,14 @@ const Home: React.FC<Props> = ({ result, criptos }) => {
 
     return (
         <main>
-            <section className={styles.exchangeContainer}>
-                <label htmlFor="exchange">Select exchange:</label>
-                <select
-                    className={styles.selectExchange}
-                    id="exchange"
-                    name="exchange"
-                    placeholder="Select exchange"
-                    value={exchange}
-                    onChange={handleChangeExchange}
-                >
-                    {OPTIONS_EXCHANGES.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.name}
-                        </option>
-                    ))}
-                </select>
-            </section>
-            <section className={styles.tableContainer}>
-                <div className={styles.tableTitle}>
-                    <span>COIN</span>
-                    <span>PRICE</span>
-                </div>
-                <div className={styles.tableLine} />
-                <div className={styles.coinsPricing}>
-                    {criptos.map((cripto) => {
-                        const coin: IFiats = update
-                            ? updatedCriptos[cripto.symbol]
-                            : result[cripto.symbol];
-
-                        return (
-                            <div key={cripto.name} className={styles.coinContainer}>
-                                <div className={styles.coinInformation}>
-                                    <span className={styles.coinIndex}>
-                                        {cripto.market_cap_rank}
-                                    </span>
-                                    <Image
-                                        alt={cripto.name}
-                                        height={30}
-                                        layout="fixed"
-                                        src={cripto.image}
-                                        width={30}
-                                    />
-                                    <div className={styles.coinMetadata}>
-                                        <h3>{cripto.symbol}</h3>
-                                        <span>{cripto.name}</span>
-                                    </div>
-                                </div>
-                                <div className={styles.coinPrices}>
-                                    {FIATS.map((fiat) => (
-                                        <div key={fiat} className={styles.coinsFiatPrice}>
-                                            <span>{fiat}</span>
-                                            {loading ? (
-                                                <Skeleton />
-                                            ) : (
-                                                <h4>
-                                                    {fiat == "USD"
-                                                        ? formatPrice(cripto.current_price)
-                                                        : formatPrice(coin ? coin[fiat] : 0)}
-                                                </h4>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </section>
+            <ExchangeSelector exchange={exchange} handleChangeExchange={handleChangeExchange} />
+            <CriptoTable
+                criptos={criptos}
+                loading={loading}
+                result={result}
+                update={update}
+                updatedCriptos={updatedCriptos}
+            />
         </main>
     );
 };
