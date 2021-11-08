@@ -13,39 +13,24 @@ export const OPTIONS_EXCHANGES = [
         name: "Belo",
         value: "belo",
     },
-];
-
-export const CRIPTOS = [
     {
-        id: 1,
-        alias: "BTC",
-        name: "Bitcoin",
-        icon: "/coins/btc.png",
+        name: "Ripio",
+        value: "ripio",
     },
     {
-        id: 2,
-        alias: "ETH",
-        name: "Ethereum",
-        icon: "/coins/eth.png",
+        name: "SatoshiTango",
+        value: "satoshitango",
     },
     {
-        id: 3,
-        alias: "DAI",
-        name: "Dai",
-        icon: "/coins/dai.png",
+        name: "CryptoMKT",
+        value: "cryptomkt",
     },
     {
-        id: 4,
-        alias: "ADA",
-        name: "Cardano",
-        icon: "/coins/ada.png",
-    },
-    {
-        id: 5,
-        alias: "BNB",
-        name: "Binance Coin",
-        icon: "/coins/bnb.png",
+        name: "Bitso",
+        value: "bitso",
     },
 ];
 
 export const API_URL = "https://criptoya.com/api";
+
+export const COINGECKO_API = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd";
