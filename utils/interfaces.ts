@@ -1,12 +1,17 @@
-export interface ICriptos {
-    BTC: IFiats;
-    ETH: IFiats;
-    DAI: IFiats;
-    ADA: IFiats;
-    BNB: IFiats;
+export interface ICriptosPrices {
+    [cripto: string]: IFiats;
 }
 
-interface IFiats {
+export interface IFiats {
     ARS: number;
     USD: number;
+}
+
+export interface ICriptos {
+    id: string;
+    symbol: string;
+    name: string;
+    image: string;
+    current_price: number;
+    market_cap_rank: number;
 }
