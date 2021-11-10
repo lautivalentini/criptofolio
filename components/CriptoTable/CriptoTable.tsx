@@ -60,7 +60,10 @@ const CriptoTable: React.FC<Props> = ({ criptos, updatedCriptos, result, update,
                                                     <div key={`${fiat}-${name}-${symbol}`}>
                                                         <span>{fiat}</span>
                                                         {loading ? (
-                                                            <Skeleton heigth="" width="100px" />
+                                                            <Skeleton
+                                                                heigth=".8rem"
+                                                                width="125px"
+                                                            />
                                                         ) : (
                                                             <h4>
                                                                 {fiat == "USD"
