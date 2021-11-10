@@ -18,53 +18,69 @@ interface Props {
 const CriptoTable: React.FC<Props> = ({ criptos, updatedCriptos, result, update, loading }) => {
     return (
         <section className={styles.tableContainer}>
-            <div className={styles.tableTitle}>
-                <span>COIN</span>
-                <span>PRICE</span>
-            </div>
-            <div className={styles.tableLine} />
-            <div className={styles.coinsPricing}>
-                {criptos.map((cripto) => {
-                    const coin: any = update
-                        ? updatedCriptos[cripto.symbol]
-                        : result[cripto.symbol];
+            <table className={styles.tableCoinsContainer}>
+                <thead>
+                    <tr>
+                        <th>COINS</th>
+                        <th>PRICE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {criptos.map((cripto: ICriptos) => {
+                        const { id, symbol, name, image, current_price, market_cap_rank } = cripto;
+                        const coin: any = update
+                            ? updatedCriptos[cripto.symbol]
+                            : result[cripto.symbol];
 
-                    return (
-                        <div key={cripto.name} className={styles.coinContainer}>
-                            <div className={styles.coinInformation}>
-                                <span className={styles.coinIndex}>{cripto.market_cap_rank}</span>
-                                <Image
-                                    alt={cripto.name}
-                                    height={30}
-                                    layout="fixed"
-                                    src={cripto.image}
-                                    width={30}
-                                />
-                                <div className={styles.coinMetadata}>
-                                    <h3>{cripto.symbol}</h3>
-                                    <span>{cripto.name}</span>
-                                </div>
-                            </div>
-                            <div className={styles.coinPrices}>
-                                {FIATS.map((fiat) => (
-                                    <div key={fiat} className={styles.coinsFiatPrice}>
-                                        <span>{fiat}</span>
-                                        {loading ? (
-                                            <Skeleton />
-                                        ) : (
-                                            <h4>
-                                                {fiat == "USD"
-                                                    ? formatPrice(cripto.current_price)
-                                                    : formatPrice(coin ? coin[fiat] : 0)}
-                                            </h4>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
+                        return (
+                            <>
+                                <tr key={id}>
+                                    <td>
+                                        <div className={styles.coinsContainer}>
+                                            <span>{market_cap_rank}</span>
+                                            <div className={styles.coinInformation}>
+                                                <Image
+                                                    alt={name}
+                                                    height={30}
+                                                    layout="fixed"
+                                                    src={image}
+                                                    width={30}
+                                                />
+                                                <div>
+                                                    <h4>{symbol.toUpperCase()}</h4>
+                                                    <span>{name}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className={styles.pricesContainer}>
+                                            {FIATS.map((fiat) => {
+                                                return (
+                                                    <div key={`${fiat}-${name}-${symbol}`}>
+                                                        <span>{fiat}</span>
+                                                        {loading ? (
+                                                            <Skeleton heigth="" width="100px" />
+                                                        ) : (
+                                                            <h4>
+                                                                {fiat == "USD"
+                                                                    ? formatPrice(current_price)
+                                                                    : formatPrice(
+                                                                          coin ? coin[fiat] : 0,
+                                                                      )}
+                                                            </h4>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </>
+                        );
+                    })}
+                </tbody>
+            </table>
         </section>
     );
 };

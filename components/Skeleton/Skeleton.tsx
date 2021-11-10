@@ -1,9 +1,19 @@
+import React from "react";
+
 import styles from "./skeleton.module.scss";
 
-const Skeleton = () => {
+interface Props {
+    width: string;
+    heigth: string;
+}
+
+const Skeleton: React.FC<Props> = ({ width, heigth }) => {
     return (
         <div data-title className={styles.title}>
-            <div className={`${styles.skeleton} ${styles.skeletonText}`} />
+            <div
+                className={`${styles.skeleton} ${styles.skeletonText}`}
+                style={{ width: width, height: heigth }}
+            />
         </div>
     );
 };
