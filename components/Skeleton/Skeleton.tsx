@@ -3,8 +3,8 @@ import React from "react";
 import styles from "./skeleton.module.scss";
 
 interface Props {
-    width: string;
-    heigth: string;
+    width?: string;
+    heigth?: string;
 }
 
 const Skeleton: React.FC<Props> = ({ width, heigth }) => {
