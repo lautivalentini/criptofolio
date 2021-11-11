@@ -1,0 +1,28 @@
+.tabsContainer {
+    position: absolute;
+    width: 100%;
+    .tabs { 
+        position: relative;
+        width: 90%;
+        max-width: 400px;
+        margin: auto;
+        height: 50px;
+        .tabsText {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size: 18px;
+            span {
+                color: #a5a7af;
+                cursor: pointer;
+            }
+        }
+        .tab {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background-color: #7908FF;
+        }
+    }
+}
