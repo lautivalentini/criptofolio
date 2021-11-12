@@ -4,10 +4,14 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Tabs from "../components/Tabs";
 
-const AUTH_TYPES = {
+const AUTH_TYPES: Auth = {
     0: "login",
     1: "signup",
 };
+
+interface Auth {
+    [key: number]: string;
+}
 
 const default_data = {
     email: "",
@@ -25,7 +29,6 @@ type tdata = {
 
 const Auth: React.FC = () => {
     const [auth, setAuth] = useState<string>(AUTH_TYPES[0]);
-    const [error, setError] = useState<boolean>(false);
     const [data, setData] = useState<tdata>(default_data);
 
     function onChangeHandler(e: React.FormEvent<HTMLInputElement>) {
