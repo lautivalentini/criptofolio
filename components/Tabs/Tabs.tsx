@@ -6,7 +6,16 @@ interface Props {
     handleChangeAauth: (tab: number) => void;
 }
 
-const STYLES_TABS = {
+interface StylesTabsTypes {
+    login: styles;
+    register: styles;
+}
+
+type styles = {
+    [key: number]: object;
+};
+
+const STYLES_TABS: styles = {
     0: {
         left: "0",
     },
@@ -15,7 +24,7 @@ const STYLES_TABS = {
     },
 };
 
-const STYLES_TABS_TEXT = {
+const STYLES_TABS_TEXT: StylesTabsTypes = {
     login: {
         1: {
             color: "#a5a7af",
