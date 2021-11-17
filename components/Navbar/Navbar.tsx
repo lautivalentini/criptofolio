@@ -9,12 +9,16 @@ const Navbar = () => {
     return (
         <main className={styles.navbar}>
             <section>
-                <Link className={styles.linkNavabr} href="/">
-                    <a className={asPath == "/" ? styles.selected : ""}>Home</a>
-                </Link>
-                <Link className={styles.linkNavabr} href="/auth">
-                    <a className={asPath == "/auth" ? styles.selected : ""}>Authenticate</a>
-                </Link>
+                <div className={styles.linkNavabr}>
+                    <Link href="/">
+                        <a className={asPath == "/" ? styles.selected : ""}>Home</a>
+                    </Link>
+                </div>
+                <div className={styles.linkNavabr}>
+                    <Link href="/auth">
+                        <a className={asPath == "/auth" ? styles.selected : ""}>Authenticate</a>
+                    </Link>
+                </div>
             </section>
         </main>
     );
